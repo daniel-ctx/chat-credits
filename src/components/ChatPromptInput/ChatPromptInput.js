@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './ChatPromptInput.scss';
-import { IconAt, IconPlayerStop, IconX } from '@tabler/icons-react';
+import { IconAt, IconPlayerStop, IconX, IconChevronDown, IconInfoCircle, IconHelpCircle, IconInfinity } from '@tabler/icons-react';
 import { ArrowUpOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import AnimatedPlaceholder from '../AnimatedPlaceholder';
 
 const BASE_SUGGESTIONS = [
@@ -13,7 +14,7 @@ const BASE_SUGGESTIONS = [
   'lojas abr-2025'
 ];
 
-export default function ChatPromptInput({ value, onChange, onSend, onInsertBase, aiTyping, onCancelAi }) {
+export default function ChatPromptInput({ value, onChange, onSend, onInsertBase, aiTyping, onCancelAi, credits = 600 }) {
   const inputRef = useRef();
   const [showDropdown, setShowDropdown] = useState(false);
   const [filteredBases, setFilteredBases] = useState(BASE_SUGGESTIONS);
@@ -26,6 +27,8 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
   const tooltipTimeoutRef = useRef();
   const [selectedTag, setSelectedTag] = useState(null);
   const itemRefs = useRef([]);
+  const [showModeDropdown, setShowModeDropdown] = useState(false);
+  const [selectedMode, setSelectedMode] = useState('Agente');
 
   // Atualiza value externo e estado de texto
   useEffect(() => {
@@ -160,6 +163,7 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
 
   // Navegação teclado
   function handleKeyDown(e) {
+    const blockedByCredits = selectedMode === 'Agente' && credits === 0;
     if (showDropdown) {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -178,6 +182,10 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
     } else if (e.key === 'Enter' && !e.shiftKey) {
       if (aiTyping) {
         e.preventDefault(); // Não envia nada enquanto loading
+        return;
+      }
+      if (blockedByCredits) {
+        e.preventDefault();
         return;
       }
       e.preventDefault();
@@ -292,6 +300,30 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
     }
   }
 
+  // Handlers para o menu de modo
+  function handleModeButtonClick() {
+    setShowModeDropdown(!showModeDropdown);
+  }
+
+  function handleModeSelect(mode) {
+    setSelectedMode(mode);
+    setShowModeDropdown(false);
+  }
+
+  // Fecha dropdown quando clica fora
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (showModeDropdown && !event.target.closest('.chat-mode-dropdown')) {
+        setShowModeDropdown(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showModeDropdown]);
+
   // Limpa timeout do tooltip ao desmontar
   useEffect(() => {
     return () => clearTimeout(tooltipTimeoutRef.current);
@@ -322,6 +354,65 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
         <span className="chat-tooltip">Só é possível inserir uma base por mensagem.</span>
       )}
       <div style={{ display: 'flex', alignItems: 'flex-end', width: '100%' }}>
+
+
+        {/* Chat options */}
+        <div className="input-options">
+          <div className="chat-mode-dropdown">
+            <button
+              type="button"
+              className="chat-mode"
+              onClick={handleModeButtonClick}
+            >
+              {selectedMode === 'Agente' ? <IconInfinity size={12} /> : <IconHelpCircle size={12} />}
+              <span>{selectedMode}</span>
+              <IconChevronDown size={12} style={{ marginLeft: '4px' }} />
+            </button>
+
+            {showModeDropdown && (
+              <div className="chat-mode-menu">
+                <div
+                  className={`mode-option ${selectedMode === 'Agente' ? 'selected' : ''}`}
+                  onClick={() => handleModeSelect('Agente')}
+                >
+                  <IconInfinity size={12} />
+                  <span>Agente</span>
+                </div>
+                <div
+                  className={`mode-option ${selectedMode === 'Dúvidas' ? 'selected' : ''}`}
+                  onClick={() => handleModeSelect('Dúvidas')}
+                >
+                  <IconHelpCircle size={12} />
+                  <span>Dúvidas</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {selectedMode === 'Agente' && (
+            <div className={`label-credits${credits === 0 ? ' no-credits' : ''}`}>
+              <p>
+                <Tooltip title={credits === 0 ? 'Você está sem créditos. Recarregue para usar o modo Agente.' : 'Os créditos são consumidos apenas quando o agente executa ações dentro do sistema.'}>
+                  <span className='credits'><IconInfoCircle size={14} /> {credits}</span>
+                </Tooltip>
+                {' '}{credits === 0 ? 'créditos' : 'Créditos'}
+              </p>
+            </div>
+          )}
+
+          {selectedMode === 'Dúvidas' && (
+            <div className='label-credits'>
+              <p>
+                <Tooltip title="Você pode usar o modo de dúvidas à vontade. Ele é gratuito e não desconta créditos.">
+                  <span className='credits'><IconInfoCircle size={14} /></span>
+                </Tooltip>
+                {' '}Uso gratuito
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Textarea */}
         <div
           className="chat-prompt-input"
           contentEditable
@@ -334,9 +425,12 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           data-placeholder="Digite sua mensagem. Use @ para inserir uma base."
-          style={{ minHeight: 60, outline: 'none', whiteSpace: 'pre-wrap', flex: 1, position: 'relative' }}
+          style={{ minHeight: 52, outline: 'none', whiteSpace: 'pre-wrap', flex: 1, position: 'relative' }}
         />
+
+        {/* Chat actions */}
         <div className='input-actions'>
+
           <button
             type="button"
             className="chat-add-context"
@@ -344,19 +438,22 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
             disabled={hasTag()}
           >
             <IconAt size={12} />
-            Inserir contexto
+            Inserir
           </button>
+
+
           {selectedTag && (
             <button
               type="button"
               className="chat-context"
-              
+
             >
-              <IconAt  />
+              <IconAt />
               {selectedTag}
-              <IconX className='close-ic' onClick={handleRemoveTag}/>
+              <IconX className='close-ic' onClick={handleRemoveTag} />
             </button>
           )}
+
           <button
             className={`chat-send-btn${hasText && !aiTyping ? ' active' : ''}${aiTyping ? ' loading' : ''}`}
             type="button"
@@ -364,7 +461,8 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
               if (aiTyping) {
                 if (onCancelAi) onCancelAi();
               } else {
-                if (!showDropdown && onSend && hasText) {
+                const blockedByCredits = selectedMode === 'Agente' && credits === 0;
+                if (!blockedByCredits && !showDropdown && onSend && hasText) {
                   onSend(getTextToSend());
                   inputRef.current.innerHTML = '';
                   if (onChange) onChange('');
@@ -373,7 +471,7 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
                 }
               }
             }}
-            disabled={aiTyping && !onCancelAi || !hasText && !aiTyping}
+            disabled={aiTyping && !onCancelAi || !hasText && !aiTyping || (selectedMode === 'Agente' && credits === 0)}
           >
             {aiTyping ? <IconPlayerStop /> : <ArrowUpOutlined />}
           </button>

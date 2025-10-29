@@ -4,7 +4,7 @@
 //Box do chat
 .chat-prompt-input-wrapper {
   width: 100%;
-  height: 100px;
+  height: 110px;
   margin: 16px;
   position: relative;
   border: 1px solid $neutral-200;
@@ -15,9 +15,11 @@
     max-height: 54px;
     overflow-y: auto;
     width: auto;
-    margin: 10px;
+    margin: 8px;
     margin-right: 0;
     outline: unset;
+    margin-top: 30px;
+    font-size: 12px;
 
     textarea {
       padding: 10px;
@@ -83,16 +85,18 @@
   }
 
 
+
+
   .input-actions {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: calc(100% - 20px);
+    width: calc(100% - 16px);
     display: flex;
     align-items: center;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
 
     .chat-add-context {
       transition: background 0.1s;
@@ -100,7 +104,7 @@
       height: unset !important;
       border-radius: 4px;
       background-color: $neutral-200;
-      color: $neutral-500;
+      color: $neutral-600;
       font-weight: 600;
       font-size: 10px !important;
       display: flex;
@@ -113,7 +117,7 @@
 
       &:hover {
         background: $neutral-300;
-        color: $neutral-500;
+        color: $neutral-600;
       }
 
       span {
@@ -127,7 +131,7 @@
         margin-right: 4px;
 
         path {
-          color: $neutral-500;
+          color: $neutral-600;
         }
       }
 
@@ -194,60 +198,7 @@
     }
 
 
-    .chat-send-btn {
-      background: transparent;
-      border: none;
-      border-radius: 8px;
-      height: 20px;
-      width: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: auto;
-      cursor: pointer;
-      font-size: 1.3rem;
-      padding: 0;
-      flex-shrink: 0;
-      border: 1px solid $neutral-600;
-      border-radius: 100px;
 
-      &:hover {
-        background: darken($neutral-100, 10%);
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: default;
-
-        &:hover {
-          background: transparent
-        }
-      }
-
-      span {
-        svg {
-          path {
-            color: $neutral-600;
-          }
-
-        }
-      }
-
-      .tabler-icon {
-        width: 14px;
-        height: 14px;
-      }
-    }
-
-    .chat-send-btn.loading {
-      animation: send-blink 1.2s cubic-bezier(0.4,0,0.2,1) infinite;
-      transition: opacity 0.3s;
-    }
-
-    @keyframes send-blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.65; }
-    }
   }
 
   .chat-tooltip {
@@ -268,5 +219,244 @@
     transition: opacity 0.15s;
     pointer-events: none;
     white-space: nowrap;
+  }
+}
+
+
+.input-options {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-left: 10px;
+  padding-right: 8px;
+
+  .chat-mode-dropdown {
+    position: relative;
+    margin-right: 10px;
+
+    .chat-mode {
+      transition: background 0.1s;
+      width: auto;
+      height: unset !important;
+      border-radius: 4px;
+      background-color: transparent;
+      color: $neutral-600;
+      font-weight: 600;
+      font-size: 10px !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      padding: 0px 0px;
+      cursor: pointer;
+      border: none;
+
+      &:hover {
+        background: $neutral-100;
+        color: $neutral-600;
+      }
+
+      span {
+        font-size: inherit;
+        color: inherit;
+        margin-left: 4px;
+      }
+
+      svg {
+        width: 12px;
+        height: 12px;
+        margin-left: 0px;
+
+        path {
+          color: $neutral-600;
+        }
+      }
+
+      &:disabled {
+        opacity: 0.7;
+
+        &:hover {
+          background-color: $neutral-200;
+          cursor: default;
+        }
+      }
+    }
+
+    .chat-mode-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: $neutral-50;
+      border: 1px solid $neutral-200;
+      border-radius: 6px;
+      box-shadow: $large-shadow;
+      z-index: 1000;
+      min-width: 80px;
+      margin-top: 4px;
+
+      .mode-option {
+        padding: 8px 12px;
+        cursor: pointer;
+        font-weight: 400;
+        color: $neutral-600;
+        font-size: 10px;
+        transition: background 0.15s;
+        display: flex;
+
+        &:hover {
+          background: $primary-200;
+          color: $primary-500;
+        }
+
+        &.selected {
+          background: $primary-200;
+          color: $primary-500;
+          font-weight: 600;
+        }
+
+        span {
+          margin-left: 4px;
+          font-size: 10px;
+        }
+
+        svg {
+          width: 12px;
+          height: 12px;
+
+          path {
+            color: $neutral-600;
+          }
+        }
+
+        &:first-child {
+          border-radius: 6px 6px 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 0 6px 6px;
+        }
+
+        &:only-child {
+          border-radius: 6px;
+        }
+      }
+    }
+  }
+
+  .label-credits {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    svg {
+      margin-right: 4px;
+
+      path {
+        color: $neutral-500;
+      }
+    }
+
+    p {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      text-align: right;
+      font-weight: 500;
+      color: $neutral-500;
+      font-size: 11px;
+
+      .ant-tooltip-open {
+        font-size: 11px!important;
+      }
+
+      .credits {
+        margin-right: 2px;
+        display: flex;
+        align-items: center;
+        color: inherit;
+        font-size: inherit;
+
+      }
+    }
+  }
+
+  .label-credits.no-credits {
+    p {
+      color: $alert-600;
+      .credits {
+        svg {
+          color: inherit;
+          path { color: inherit; }
+        }
+      }
+    }
+  }
+
+}
+
+.chat-send-btn {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  height: 18px;
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0;
+  flex-shrink: 0;
+  border: 1px solid $neutral-600;
+  border-radius: 100px;
+
+  &:hover {
+    background: darken($neutral-100, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+
+    &:hover {
+      background: transparent
+    }
+  }
+
+  span {
+    svg {
+      path {
+        color: $neutral-600;
+      }
+
+    }
+  }
+
+  .tabler-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.chat-send-btn.loading {
+  animation: send-blink 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transition: opacity 0.3s;
+}
+
+@keyframes send-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.65;
   }
 }

@@ -22,7 +22,7 @@ function getRandomDelay() {
   return { ms: seconds * 1000, seconds };
 }
 
-const Chat = ({ onProcessingStart, onProcessingEnd }) => {
+const Chat = ({ onProcessingStart, onProcessingEnd, credits = 600 }) => {
   const [messages, setMessages] = useState([initialAiGreeting]);
   const [mentionsValue, setMentionsValue] = useState('');
   const [aiTyping, setAiTyping] = useState(false);
@@ -104,6 +104,7 @@ const Chat = ({ onProcessingStart, onProcessingEnd }) => {
         <ChatPromptInput
           value={prompt}
           onChange={setPrompt}
+          credits={credits}
           onSend={text => {
             if (!text.trim()) return;
             setMessages([...messages, { sender: 'user', text }]);
@@ -128,6 +129,7 @@ const Chat = ({ onProcessingStart, onProcessingEnd }) => {
           onCancelAi={handleCancelAi}
         />
       </form>
+      <p class="disclaimer">Toda IA generativa pode cometer erros. Confirme as informações.</p>
     </div>
   );
 };
