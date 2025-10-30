@@ -11,7 +11,7 @@ function App() {
     <div className='text-description'>
       <div>
         <h1>Chat credits </h1>
-        <h2>Evolução para evidenciar o consumo de créditos e os modos de</h2>
+        <h2>Evolução para o consumo de créditos e os modos de operação.</h2>
         <div className='point'><IconArrowRight /><p>Utilize o menu dropdown para trocar entre o modo Agente e o modo Dúvidas</p></div>
         <div className='point'><IconArrowRight /><p>Clique no botão abaixo para simular 0 créditos e exibir o comportamento esperado.</p></div>
         <div style={{ marginTop: 12 }}>
