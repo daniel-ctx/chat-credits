@@ -4,21 +4,22 @@
 //Box do chat
 .chat-prompt-input-wrapper {
   width: 100%;
-  height: 110px;
+  height: 120px;
   margin: 16px;
+  margin-bottom: 12px;
   position: relative;
   border: 1px solid $neutral-200;
   border-radius: 8px;
 
 
   .chat-prompt-input {
-    max-height: 54px;
+    max-height: 48px;
     overflow-y: auto;
     width: auto;
     margin: 8px;
     margin-right: 0;
     outline: unset;
-    margin-top: 30px;
+    margin-top: 36px;
     font-size: 12px;
 
     textarea {
@@ -82,6 +83,7 @@
     margin: 0 2px;
     display: inline-block;
     cursor: pointer;
+    font-size: 12px;
   }
 
 
@@ -96,28 +98,28 @@
     align-items: center;
     padding-bottom: 8px;
     padding-left: 8px;
-    padding-right: 8px;
+    padding-right: 6px;
 
     .chat-add-context {
       transition: background 0.1s;
       width: auto;
       height: unset !important;
       border-radius: 4px;
-      background-color: $neutral-200;
-      color: $neutral-600;
+      background-color: $neutral-50;
+      color: $primary-500;
       font-weight: 600;
-      font-size: 10px !important;
+      font-size: 12px !important;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: row;
-      padding: 2px 6px;
+      padding: 2px 2px;
       cursor: pointer;
       margin-right: 10px;
 
       &:hover {
-        background: $neutral-300;
-        color: $neutral-600;
+        background: $neutral-100;
+        color: $primary-600;
       }
 
       span {
@@ -129,17 +131,18 @@
         width: 12px;
         height: 12px;
         margin-right: 4px;
+        color: inherit;
 
         path {
-          color: $neutral-600;
+          color: inherit;
         }
       }
 
       &:disabled {
-        opacity: 0.7;
+        color: $neutral-300;
 
         &:hover {
-          background-color: $neutral-200;
+          background-color: $neutral-50;
           cursor: default;
         }
       }
@@ -153,7 +156,7 @@
       background-color: $primary-200;
       color: $primary-500;
       font-weight: 600;
-      font-size: 10px !important;
+      font-size: 12px !important;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -183,10 +186,10 @@
       }
 
       &:disabled {
-        opacity: 0.7;
+        color: $neutral-300;
 
         &:hover {
-          background-color: $neutral-200;
+          background-color: $neutral-50;
           cursor: default;
         }
       }
@@ -227,13 +230,13 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - 20px);
+  width: calc(100% - 16px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 8px;
-  padding-left: 10px;
-  padding-right: 8px;
+  padding-left: 8px;
+  padding-right: 6px;
 
   .chat-mode-dropdown {
     position: relative;
@@ -244,15 +247,15 @@
       width: auto;
       height: unset !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: $neutral-50;
       color: $neutral-600;
       font-weight: 600;
-      font-size: 10px !important;
+      font-size: 12px !important;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: row;
-      padding: 0px 0px;
+      padding: 2px 2px;
       cursor: pointer;
       border: none;
 
@@ -271,9 +274,10 @@
         width: 12px;
         height: 12px;
         margin-left: 0px;
+        color: inherit;
 
         path {
-          color: $neutral-600;
+          color: inherit;
         }
       }
 
@@ -304,32 +308,23 @@
         cursor: pointer;
         font-weight: 400;
         color: $neutral-600;
-        font-size: 10px;
+        font-size: 12px;
         transition: background 0.15s;
         display: flex;
 
-        &:hover {
-          background: $primary-200;
-          color: $primary-500;
-        }
-
-        &.selected {
-          background: $primary-200;
-          color: $primary-500;
-          font-weight: 600;
-        }
-
         span {
           margin-left: 4px;
+          color: inherit;
           font-size: 10px;
         }
 
         svg {
           width: 12px;
+          color: inherit;
           height: 12px;
 
           path {
-            color: $neutral-600;
+            color: inherit;
           }
         }
 
@@ -344,6 +339,22 @@
         &:only-child {
           border-radius: 6px;
         }
+
+        &.selected {
+          background: $neutral-50;
+          color: $primary-500;
+          font-weight: 800;
+        }
+
+        &:hover {
+          background: $primary-200;
+          color: $neutral-600;
+          &.selected {
+            color: $primary-500;
+          }
+        }
+
+        
       }
     }
   }
@@ -352,6 +363,7 @@
     display: flex;
     align-items: center;
     margin-left: auto;
+    cursor:help ;
 
     svg {
       margin-right: 4px;
@@ -368,10 +380,10 @@
       text-align: right;
       font-weight: 500;
       color: $neutral-500;
-      font-size: 11px;
+      font-size: 12px;
 
       .ant-tooltip-open {
-        font-size: 11px!important;
+        font-size: 12px!important;
       }
 
       .credits {
@@ -379,23 +391,28 @@
         display: flex;
         align-items: center;
         color: inherit;
-        font-size: inherit;
+        font-size: 12px;
 
       }
     }
-  }
-
-  .label-credits.no-credits {
-    p {
-      color: $alert-600;
-      .credits {
-        svg {
-          color: inherit;
-          path { color: inherit; }
+    &.free {
+      p {
+        color: $success-600;
+      }
+    }
+    &.no-credits {
+      p {
+        color: $danger-600;
+        .credits {
+          svg {
+            color: inherit;
+            path { color: inherit; }
+          }
         }
       }
     }
   }
+
 
 }
 
@@ -421,8 +438,15 @@
   }
 
   &:disabled {
-    opacity: 0.5;
+    color: $neutral-300;
     cursor: default;
+    border: 1px solid $neutral-300;
+    svg {
+      color: inherit;
+      path {
+        color: inherit;
+      }
+    }
 
     &:hover {
       background: transparent

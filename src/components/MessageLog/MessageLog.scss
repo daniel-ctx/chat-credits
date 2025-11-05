@@ -1,11 +1,10 @@
 @import '../../styles/variables.scss';
 /*Visual das mensagens*/
 .message-log {
-    flex: 1;
-    padding: 20px 0;
-    overflow-y: auto;
-    display: flex;
-    padding: $padding;
+  overflow-y: auto;
+  display: flex;
+  flex: 1;
+  padding: 16px 20px;
     flex-direction: column;
   
     > :first-child {
