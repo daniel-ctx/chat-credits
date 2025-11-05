@@ -49,9 +49,9 @@ export const AiMessage = ({ text, typewriter, onTypewriterEnd }) => {
 
   return (
     <div className={`ai-message ${typewriter ? 'ai-typing' : 'ai-completed'}`}>
-      <span className="chat-ai-icon">
+      {/* <span className="chat-ai-icon">
         <IconSparkles size={20} stroke={2} />
-      </span>
+      </span> */}
       <p
         className="ai-message-markdown"
         aria-live="polite"

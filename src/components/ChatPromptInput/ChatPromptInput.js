@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './ChatPromptInput.scss';
-import { IconAt, IconPlayerStop, IconX, IconChevronDown, IconInfoCircle, IconHelpCircle, IconInfinity } from '@tabler/icons-react';
+import { IconAt, IconPlayerStop, IconX, IconChevronDown, IconMessage, IconInfinity } from '@tabler/icons-react';
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import AnimatedPlaceholder from '../AnimatedPlaceholder';
@@ -364,7 +364,7 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
               className="chat-mode"
               onClick={handleModeButtonClick}
             >
-              {selectedMode === 'Agente' ? <IconInfinity size={12} /> : <IconHelpCircle size={12} />}
+              {selectedMode === 'Agente' ? <IconInfinity size={12} /> : <IconMessage size={12} />}
               <span>{selectedMode}</span>
               <IconChevronDown size={12} style={{ marginLeft: '4px' }} />
             </button>
@@ -382,7 +382,7 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
                   className={`mode-option ${selectedMode === 'Dúvidas' ? 'selected' : ''}`}
                   onClick={() => handleModeSelect('Dúvidas')}
                 >
-                  <IconHelpCircle size={12} />
+                  <IconMessage size={12} />
                   <span>Dúvidas</span>
                 </div>
               </div>
@@ -392,21 +392,27 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
           {selectedMode === 'Agente' && (
             <div className={`label-credits${credits === 0 ? ' no-credits' : ''}`}>
               <p>
-                <Tooltip title={credits === 0 ? 'Você está sem créditos. Recarregue para usar o modo Agente.' : 'Os créditos são consumidos apenas quando o agente executa ações dentro do sistema.'}>
-                  <span className='credits'><IconInfoCircle size={14} /> {credits}</span>
+                <Tooltip title={credits === 0 ? 'Você está sem créditos até a próxima data de recarga. Se necessário, entre em contato com o suporte para adquirir uma carga adicional.' : 'O modo agente pode tirar dúvidas, analisar dados ou executar ações dentro do sistema. Créditos são consumidos apenas quando o Cortex AI executa ações ou faz análises.'}>
+                  <span className='credits'>
+                    {/* <IconInfoCircle size={14} /> */}
+                     {credits}{' '}{credits === 0 ? 'créditos' : 'Créditos'}
+                     </span>
                 </Tooltip>
-                {' '}{credits === 0 ? 'créditos' : 'Créditos'}
+                
               </p>
             </div>
           )}
 
           {selectedMode === 'Dúvidas' && (
-            <div className='label-credits'>
+            <div className='label-credits free'>
               <p>
-                <Tooltip title="Você pode usar o modo de dúvidas à vontade. Ele é gratuito e não desconta créditos.">
-                  <span className='credits'><IconInfoCircle size={14} /></span>
+                <Tooltip title="Você pode usar o modo de dúvidas de suporte à vontade. Ele é gratuito e não desconta créditos do Cortex AI.">
+                  <span className='credits'>
+                    {/* <IconInfoCircle size={14} /> */}
+                  {' '}Uso gratuito
+                  </span>
                 </Tooltip>
-                {' '}Uso gratuito
+                
               </p>
             </div>
           )}
@@ -425,7 +431,7 @@ export default function ChatPromptInput({ value, onChange, onSend, onInsertBase,
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           data-placeholder="Digite sua mensagem. Use @ para inserir uma base."
-          style={{ minHeight: 52, outline: 'none', whiteSpace: 'pre-wrap', flex: 1, position: 'relative' }}
+          style={{ minHeight: 48, outline: 'none', whiteSpace: 'pre-wrap', flex: 1, position: 'relative' }}
         />
 
         {/* Chat actions */}
